@@ -9,7 +9,7 @@ const displayXCoordinate0 = document.getElementById('displayXCoordinate0');
 const displayYCoordinate0 = document.getElementById('displayYCoordinate0');
 const touch0 = document.getElementById('touch0');
 
-window.document.ontouchmove = (event) => {
+document.ontouchmove = (event) => {
   touchCoordinates0 = event.changedTouches.item(0);
   event.preventDefault();
   displayXCoordinate0.textContent = `X0: ${touchCoordinates0.pageX}`;
@@ -23,7 +23,7 @@ window.document.ontouchmove = (event) => {
 // document.addEventListener('touchmove', handleTouchEvent);
 // document.addEventListener('touchend', handleTouchEvent);
 
-window.document.onmousemove = (event) => {
+document.onmousemove = (event) => {
     displayXCoordinate0.textContent = `X0: ${event.pageX}`;
     displayYCoordinate0.textContent = `Y0: ${event.pageY}`;  
 };
