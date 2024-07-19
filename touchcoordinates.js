@@ -1,4 +1,4 @@
-const version = '1.0';
+const version = '1.1';
 
 let touchCoordinates0;
 
@@ -9,8 +9,8 @@ const displayXCoordinate0 = document.getElementById('displayXCoordinate0');
 const displayYCoordinate0 = document.getElementById('displayYCoordinate0');
 const touch0 = document.getElementById('touch0');
 
-const handleTouchEvent = (event) => {
-  touchCoordinates0 = event.ChangedTouches.item(0);
+window.document.ontouchmove = (event) => {
+  touchCoordinates0 = event.changedTouches.item(0);
   event.preventDefault();
   displayXCoordinate0.textContent = `X0: ${touchCoordinates0.pageX}`;
   displayYCoordinate0.textContent = `Y0: ${touchCoordinates0.pageY}`;
@@ -19,13 +19,13 @@ const handleTouchEvent = (event) => {
   touch0.style.transform = `${touchCoordinates0.rotationAngle}deg`;
 }
 
-document.addEventListener('touchstart', handleTouchEvent);
-document.addEventListener('touchmove', handleTouchEvent);
-document.addEventListener('touchend', handleTouchEvent);
+// document.addEventListener('touchstart', handleTouchEvent);
+// document.addEventListener('touchmove', handleTouchEvent);
+// document.addEventListener('touchend', handleTouchEvent);
 
 window.document.onmousemove = (event) => {
     displayXCoordinate0.textContent = `X0: ${event.pageX}`;
     displayYCoordinate0.textContent = `Y0: ${event.pageY}`;  
-  };
+};
 
 displayVersion.textContent = `Version: ${version}`;
