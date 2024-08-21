@@ -3,8 +3,11 @@ const topContainer = document.getElementById('top-container');
 const displayPageX = document.getElementById('displayPageX');
 const displayPageY = document.getElementById('displayPageY');
 
+let presentTouches = [];
+
 document.addEventListener('touchstart', event => {
   event.preventDefault();
+  presentTouches = event.touches;
 
   for (let i = 0; i < event.changedTouches.length; i++) {
     let id = event.changedTouches[i].identifier;
@@ -45,6 +48,8 @@ document.addEventListener('touchstart', event => {
 }, { passive: false }); 
 
 document.addEventListener('touchmove', event => {
+  presentTouches = event.touches;
+
   for (let i = 0; i < event.changedTouches.length; i++) {
     let id = event.changedTouches[i].identifier;
     let x = Math.round(event.changedTouches[i].pageX);
@@ -62,66 +67,52 @@ document.addEventListener('touchmove', event => {
 });
 
 document.addEventListener('touchend', event =>{
-  for (let i = 0; i < event.changedTouches.length; i++) {
-    let divNodeList = document.querySelectorAll('div.touch');
-    let divIDList = [];
-    divNodeList.forEach(node => {
-      divIDList.push(node.id);
-    });
+  presentTouches = event.touches;
 
-    let actualTouches = event.touches;
-    let actualTouchesList = []
-    for (let i = 0; i < actualTouches.length; i++) {
-      actualTouchesList.push(String(actualTouches[i].identifier));
-    }
+  // Alternative way of handling touch point removal which did not seem as robust. On a rare occasion, 
+  // a touch point or two would not be removed using this method.  
+  
+  // let dataBox = document.getElementById(`dataBoxFor${event.changedTouches[i].identifier}`);
+  // dataBox.remove();
 
-    divIDList.forEach(id => {
-      if (!actualTouchesList.includes(id)) {
-        let dataBoxToRemove = document.getElementById(`dataBoxFor${id}`);
-        let touchToRemove = document.getElementById(id);
-        dataBoxToRemove.remove();
-        touchToRemove.remove();
-      }
-    });
-
-    // Alternative way of handling this which did not seem as robust.
-    // let dataBox = document.getElementById(`dataBoxFor${event.changedTouches[i].identifier}`);
-    // dataBox.remove();
-
-    // let touch = document.getElementById(event.changedTouches[i].identifier);
-    // touch.remove();
-  }
+  // let touch = document.getElementById(event.changedTouches[i].identifier);
+  // touch.remove();
 });
 
 document.addEventListener('touchcancel', event =>{
   console.log('Touch Cancel');
-  for (let i = 0; i < event.changedTouches.length; i++) {
-    let divNodeList = document.querySelectorAll('div.touch');
-    let divIDList = [];
-    divNodeList.forEach(node => {
-      divIDList.push(node.id);
-    });
+  presentTouches = event.touches;
 
-    let actualTouches = event.touches;
-    let actualTouchesList = []
-    for (let i = 0; i < actualTouches.length; i++) {
-      actualTouchesList.push(String(actualTouches[i].identifier));
-    }
+  // Alternative way of handling touch point removal which did not seem as robust. On a rare occasion, 
+  // a touch point or two would not be removed using this method.  
 
-    divIDList.forEach(id => {
-      if (!actualTouchesList.includes(id)) {
-        let dataBoxToRemove = document.getElementById(`dataBoxFor${id}`);
-        let touchToRemove = document.getElementById(id);
-        dataBoxToRemove.remove();
-        touchToRemove.remove();
-      }
-    });
+  // let dataBox = document.getElementById(`dataBoxFor${event.changedTouches[i].identifier}`);
+  // dataBox.remove();
 
-    // Alternative way of handling this which did not seem as robust.
-    // let dataBox = document.getElementById(`dataBoxFor${event.changedTouches[i].identifier}`);
-    // dataBox.remove();
-
-    // let touch = document.getElementById(event.changedTouches[i].identifier);
-    // touch.remove();
-  }
+  // let touch = document.getElementById(event.changedTouches[i].identifier);
+  // touch.remove();
 });
+
+const removeTouches = () => {
+  let divNodeList = document.querySelectorAll('div.touch');
+  let divIDList = [];
+  divNodeList.forEach(node => {
+    divIDList.push(node.id);
+  });
+
+  let presentTouchesList = []
+  for (let i = 0; i < presentTouches.length; i++) {
+    presentTouchesList.push(String(presentTouches[i].identifier));
+  }
+
+  divIDList.forEach(id => {
+    if (!presentTouchesList.includes(id)) {
+      let dataBoxToRemove = document.getElementById(`dataBoxFor${id}`);
+      let touchToRemove = document.getElementById(id);
+      dataBoxToRemove.remove();
+      touchToRemove.remove();
+    }
+  });
+}
+
+setInterval(removeTouches, 20);
