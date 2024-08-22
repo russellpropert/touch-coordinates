@@ -1,4 +1,4 @@
-const topContainer = document.getElementById('top-container');
+const dataBoxContainer = document.getElementById('dataBoxContainer');
 
 const displayPageX = document.getElementById('displayPageX');
 const displayPageY = document.getElementById('displayPageY');
@@ -18,7 +18,7 @@ document.addEventListener('touchstart', event => {
     dataBox.id = `dataBoxFor${id}`;
     dataBox.className = 'dataBox';
     dataBox.textContent = `Touch ID: ${id}`;
-    topContainer.appendChild(dataBox);
+    dataBoxContainer.appendChild(dataBox);
 
     let displayPageX = document.createElement('div');
     let displayPageY = document.createElement('div');
@@ -32,7 +32,7 @@ document.addEventListener('touchstart', event => {
     let touch = document.createElement('div');
     touch.id = id;
     touch.className = 'touch';
-    topContainer.appendChild(touch);
+    dataBoxContainer.appendChild(touch);
     touch.style.top = `${y}px`;
     touch.style.left = `${x}px`;
 
@@ -94,6 +94,9 @@ document.addEventListener('touchcancel', event =>{
 });
 
 const removeTouches = () => {
+  // const touchEnd = new TouchEvent('touchend');
+  // document.dispatchEvent(touchEnd);
+
   let divNodeList = document.querySelectorAll('div.touch');
   let divIDList = [];
   divNodeList.forEach(node => {
@@ -109,8 +112,8 @@ const removeTouches = () => {
     if (!presentTouchesList.includes(id)) {
       let dataBoxToRemove = document.getElementById(`dataBoxFor${id}`);
       let touchToRemove = document.getElementById(id);
-      dataBoxToRemove.remove();
-      touchToRemove.remove();
+      if (dataBoxToRemove) dataBoxToRemove.remove();
+      if (touchToRemove) touchToRemove.remove();
     }
   });
 }
